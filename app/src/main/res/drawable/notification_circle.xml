@@ -2,11 +2,11 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="ring"
     android:useLevel="false"
-    android:thickness="15dp"
+    android:thickness="10dp"
     android:innerRadius="0dp">
 
-    <solid android:color="#F00"/>
+    <solid android:color="#00F"/>
     <stroke android:color="#FFF"
         android:width="3dp"/>
-    <padding android:bottom="5dp" android:left="5dp" android:right="5dp" android:top="5dp"/>
+    <padding android:bottom="2dp" android:left="2dp" android:right="2dp" android:top="2dp"/>
 </shape>

@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
+import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigation;
     TextView slideshow;
     QBadgeView qbview;
+    TextView txtViewCounter;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -48,9 +51,13 @@ public class MainActivity extends AppCompatActivity {
                     //setMenuCounter(R.id.navigation_notifications,2);
                   //  item.setActionView(R.layout.menu_counter);
                     //updateItem(bottomNavigation,2, getDrawable(R.drawable.ic_launcher));
-                    setMenuCounter(R.id.navigation_notifications,2);
+                    //setMenuCounter(R.id.navigation_notifications,2);
                     //initializeCountDrawer();
                     //qbview.setBadgeNumber(4);
+                    txtViewCounter.setVisibility(View.INVISIBLE);
+                    Intent i2 = new Intent(MainActivity.this, MainActivityTab.class);
+                    startActivity(i2);
+
                     return true;
             }
             return false;
@@ -67,33 +74,26 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigation = (BottomNavigationView) findViewById(R.id.navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-       // bottomNavigation.getMenu().getItem(2).setActionView(R.layout.menu_counter);
 
         BottomNavigationMenuView bottomNavigationMenuView =(BottomNavigationMenuView) bottomNavigation.getChildAt(0);
+        View v = bottomNavigationMenuView.getChildAt(2);
+        BottomNavigationItemView itemView = (BottomNavigationItemView) v;
+
+        View badge = LayoutInflater.from(this) .inflate(R.layout.notification_badge, bottomNavigationMenuView, false);
+        txtViewCounter = badge.findViewById(R.id.txtview_badgeview);
+        //txtViewCounter.setText("DYN");
+        //txtCountet.setVisibility(View.GONE);
+        itemView.addView(badge);
+
 //        View v = bottomNavigationMenuView.getChildAt(2); // number of menu from left
 //         qbview =  new QBadgeView(this);
 //        qbview.bindTarget(v).setBadgeBackground(getDrawable(R.drawable.ic_launcher));
 //        qbview.setBadgeGravity(Gravity.END|Gravity.TOP);
 //        qbview.setBadgeNumber(3);
 
-
-        
-
-
-         slideshow = (TextView) MenuItemCompat.getActionView(bottomNavigation.getMenu().
-                findItem(R.id.navigation_notifications));
-
         //initializeCountDrawer();
 
-
         createFakeNotification();
-        //setMenuCounter(R.id.navigation_notifications,2);
-
-        //TextView view = (TextView) bottomNavigation.getMenu().findItem(R.id.navigation_notifications).getActionView();
-        //view.setText("sad");
-
-        //MenuItem.item.setActionView(R.layout.menu_counter);
-
     }
 
     private void initializeCountDrawer(){
@@ -113,24 +113,15 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-//                CustomNotification notification = new CustomNotification.Builder()
-//                        .setText("1")
-//                        .setBackgroundColor(Color.YELLOW)
-//                        .setTextColor(Color.BLACK)
-//                        .build();
-                // Adding notification to last item.
 
-                //MenuItem.setActionView(2);
-
-                //bottomNavigation.setNotification(notification, bottomNavigation.getItemsCount() - 1);
-
-                //notificationVisible = true;
-                //setMenuCounter(R.id.navigation_notifications,3);
-                setMenuCounter(R.id.navigation_dashboard,20);
-
-                TextView view = (TextView) bottomNavigation.getMenu().findItem(R.id.navigation_notifications).getActionView();
-                view.setText("sad");
+//                setMenuCounter(R.id.navigation_dashboard,20);
+//
+//                TextView view = (TextView) bottomNavigation.getMenu().findItem(R.id.navigation_notifications).getActionView();
+//                view.setText("sad");
                 //qbview.setBadgeNumber(70);
+
+                txtViewCounter.setVisibility(View.VISIBLE);
+                //txtViewCounter.setText("20");
             }
         }, 2000);
     }
