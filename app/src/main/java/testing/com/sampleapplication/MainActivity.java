@@ -77,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
 //        qbview.setBadgeNumber(3);
 
 
+        
+
+
          slideshow = (TextView) MenuItemCompat.getActionView(bottomNavigation.getMenu().
                 findItem(R.id.navigation_notifications));
 
