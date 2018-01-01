@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:id="@+id/txtviewCount"
+    android:layout_height="wrap_content"
+    android:text="two"
+    android:textColor="@android:color/white"
+    android:background="@drawable/notification_circle"
+    android:textAppearance="@style/TextAppearance.AppCompat.Body2">
+
+</Button>
