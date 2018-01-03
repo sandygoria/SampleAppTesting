@@ -1,0 +1,139 @@
+
+public class BottomNav {
+
+    public static final String TAB_NAME_TV_GUIDE = "Tv Guide";
+    public static final String TAB_NAME_STORE = "Store";
+    public static final String TAB_NAME_TV_PACKS = "TV Packs";
+    public static final String TAB_NAME_BILLING = "Billing";
+    public static final String TAB_NAME_SUPPORT = "Support";
+    private Activity mActivity;
+
+    public BottomNav(Activity activity) {
+        this.mActivity = activity;
+        setUpTopAndBottomNav();
+    }
+
+    public void setUpTopAndBottomNav() {
+        TabLayout tabLayout = (TabLayout) mActivity.findViewById(R.id.tabs);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabLayout.setSelectedTabIndicatorHeight(0);
+
+        String tiles[] = mActivity.getResources().getStringArray(R.array.bottom_nav);
+        int icons[] = new int[]{R.drawable.ic_guide, R.drawable.ic_store, R.drawable.ic_tv, R.drawable.ic_billing, R.drawable.ic_support};
+
+        for (int i = 0; i < icons.length; i++) {
+            TextView tab = (TextView) LayoutInflater.from(mActivity).inflate(R.layout.custom_tab_item, null);
+            tab.setText(tiles[i]);
+            tab.setCompoundDrawablesWithIntrinsicBounds(0, icons[i], 0, 0);
+            tabLayout.addTab(tabLayout.newTab().setCustomView(tab));
+        }
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                switchTab(mActivity, tab.getPosition(), SampleAppStorage.getInstance(mActivity).getCustomerType(), null);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                switchTab(mActivity, tab.getPosition(), SampleAppStorage.getInstance(mActivity).getCustomerType(), null);
+
+
+            }
+        });
+
+    }
+
+
+    public static void switchTab(Activity activity, int num, String customerType, Bundle bundle) {
+        Intent intent = null;
+
+
+        if (!Utility.isUserLoggedIn(activity)) {
+            if (num > 0 && num < 4) {
+                // MyAccount options only accessible if user logged in  - first tab is for foxtel guide
+                intent = new Intent(activity, NotLoggedInActivity.class);
+                intent.putExtra(EPGConfig.ARG_SECTION_NUMBER, num );
+                activity.startActivity(intent);
+                return;
+            }
+        }
+
+//        if (SampleAppStorage.getInstance(activity).isOutage()) {
+//
+//            if (num > 0 && num < 4)  // MyAccount options only affected by outages
+//            {
+//                intent = new Intent(activity, Outage503Activity.class);
+//                intent.putExtra(Keys.ARG_SECTION_NUMBER, num);
+//            }
+//        }else {
+
+        switch (num) {
+            case 0:
+                //Tv Guide
+                intent = new Intent(activity, TvGuideActivity.class);
+                //intent = new Intent(activity, NewTVGuideActivity.class);
+                trackTabSwitchActionForAnalytics(TAB_NAME_TV_GUIDE);
+                break;
+            case 1:
+                //Store Home page
+                intent = new Intent(activity, StoreActivity.class);
+                trackTabSwitchActionForAnalytics(TAB_NAME_STORE);
+                if (customerType.equalsIgnoreCase(AppConfig.PLAY) || customerType.equalsIgnoreCase(AppConfig.TELSTRA)) {
+                    intent.putExtra(Keys.ARG_SECTION_NUMBER, 1);
+
+                }
+
+               // intent = new Intent(activity, MainEventsListActivity.class);
+                //intent.putExtra(Extras.BOX_OFFICE_DATA_KEY, mOnDemandME.getBody());
+                //intent.putExtra(Extras.STORE_PAYMENT_OVERDUE_KEY, mOverdueBal);
+                //startActivityForResult(intent, 201);
+
+                break;
+            case 2:
+                //Tvpackages Home page
+                intent = new Intent(activity, TvPacksActivity.class);
+                trackTabSwitchActionForAnalytics(TAB_NAME_TV_PACKS);
+                if (customerType.equalsIgnoreCase(AppConfig.PLAY) || customerType.equalsIgnoreCase(AppConfig.TELSTRA)) {
+                    intent.putExtra(Keys.ARG_SECTION_NUMBER, 1);
+                }
+
+                break;
+            case 3:
+                //Billing Home page
+                intent = new Intent(activity, BillingActivity.class);
+                trackTabSwitchActionForAnalytics(TAB_NAME_BILLING);
+                if (customerType.equalsIgnoreCase(AppConfig.PLAY) || customerType.equalsIgnoreCase(AppConfig.TELSTRA) || customerType.equalsIgnoreCase(AppConfig.SECONDARY)) {
+                    intent.putExtra(Keys.ARG_SECTION_NUMBER, 1);
+                }
+                break;
+            case 4:
+                //Help and support Home page
+                intent = new Intent(activity, HelpNSupportActivity.class);
+                trackTabSwitchActionForAnalytics(TAB_NAME_SUPPORT);
+                break;
+        }
+
+//        }
+        if (intent != null) {
+            if (bundle != null) {
+                intent.putExtras(bundle);
+            }
+            activity.startActivity(intent);
+        }
+    }
+
+
+    private static void trackTabSwitchActionForAnalytics(String tabName) {
+        HashMap<String, Object> contextData = new HashMap<String, Object>();
+        contextData.put("a.homescreen.navigation.element", tabName);
+        AnalyticsUtil.analytics(true, "homescreen.navigation.engagement", contextData);
+    }
+
+}
