@@ -1,5 +1,6 @@
 package testing.com.sampleapplication;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -17,7 +18,12 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 import q.rorbin.badgeview.QBadgeView;
 
@@ -81,63 +87,50 @@ public class MainActivity extends AppCompatActivity {
 
         View badge = LayoutInflater.from(this) .inflate(R.layout.notification_badge, bottomNavigationMenuView, false);
         txtViewCounter = badge.findViewById(R.id.txtview_badgeview);
-        //txtViewCounter.setText("DYN");
-        //txtCountet.setVisibility(View.GONE);
-        itemView.addView(badge);
 
-//        View v = bottomNavigationMenuView.getChildAt(2); // number of menu from left
-//         qbview =  new QBadgeView(this);
-//        qbview.bindTarget(v).setBadgeBackground(getDrawable(R.drawable.ic_launcher));
-//        qbview.setBadgeGravity(Gravity.END|Gravity.TOP);
-//        qbview.setBadgeNumber(3);
+        final Calendar myCalendar = Calendar.getInstance();
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-        //initializeCountDrawer();
+                String myFormat = "MM/dd/yy";     //In which you need put here
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
-        createFakeNotification();
+                // update the Textview with selected Date from DatePickerDialog.
+                mTextMessage.setText(sdf.format(myCalendar.getTime()));
+            }
+        };
+
+        // u can have any widget here-say Button, Textview, EditText.. and write this on click of that widget
+        // opens a DatePickerDialog
+        mTextMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(MainActivity.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+
+
+        //itemView.addView(badge);
+
+        //createFakeNotification();
     }
 
-    private void initializeCountDrawer(){
-        //Gravity property aligns the text
-        slideshow.setGravity(Gravity.CENTER_VERTICAL);
-        slideshow.setTypeface(null, Typeface.BOLD);
-        slideshow.setTextColor(getResources().getColor(R.color.colorAccent));
-        slideshow.setText("99+");
-        slideshow.setGravity(Gravity.CENTER_VERTICAL);
-        slideshow.setTypeface(null,Typeface.BOLD);
-        slideshow.setTextColor(getResources().getColor(R.color.colorAccent));
-//count is added
-        slideshow.setText("7");
-    }
 
     private void createFakeNotification() {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-
-//                setMenuCounter(R.id.navigation_dashboard,20);
-//
-//                TextView view = (TextView) bottomNavigation.getMenu().findItem(R.id.navigation_notifications).getActionView();
-//                view.setText("sad");
-                //qbview.setBadgeNumber(70);
-
                 txtViewCounter.setVisibility(View.VISIBLE);
                 //txtViewCounter.setText("20");
             }
         }, 2000);
-    }
-
-    private void setMenuCounter(@IdRes int itemId, int count) {
-        TextView view = (TextView) bottomNavigation.getMenu().findItem(itemId).getActionView();
-        view.setText("11");
-        view.setTextColor(getResources().getColor(R.color.colorAccent));
-    }
-
-    public  void updateItem(BottomNavigationView bottomNavigationView, int index, Drawable icon) {
-        Menu menu = bottomNavigationView.getMenu();
-        MenuItem item = menu.getItem(index);
-
-        if (item != null) {
-            item.setIcon(icon);
-        }
     }
 }

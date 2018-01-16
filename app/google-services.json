@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "776749623501",
+    "project_id": "firebase-sampleapptesting"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:776749623501:android:2556a9fcb350554d",
+        "android_client_info": {
+          "package_name": "testing.com.sampleapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "776749623501-ino5ifniq6hqp4d9t210vhb6lrq6vpr6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "testing.com.sampleapplication",
+            "certificate_hash": "b8a78c55a4d982a6e3253403855c927f50aeacb9"
+          }
+        },
+        {
+          "client_id": "776749623501-sl30vk0n7mau4afrcm8ftnoagfhhvpi2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4ljKcH85BGIPjD1ahMqizWLmBkFueSfM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
