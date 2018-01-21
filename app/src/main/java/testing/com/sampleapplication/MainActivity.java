@@ -1,29 +1,37 @@
 package testing.com.sampleapplication;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+//import com.crashlytics.android.Crashlytics;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import q.rorbin.badgeview.QBadgeView;
 
@@ -46,12 +54,14 @@ public class MainActivity extends AppCompatActivity {
                     mTextMessage.setText(R.string.title_home);
                     //qbview.hide(true);
                     return true;
+
                 case R.id.navigation_dashboard:
                     mTextMessage.setText(R.string.title_dashboard);
                     //qbview.hide(false);
                     Intent i = new Intent(MainActivity.this, MainActivityTab.class);
                     startActivity(i);
                     return true;
+
                 case R.id.navigation_notifications:
                     mTextMessage.setText(R.string.title_notifications);
                     //setMenuCounter(R.id.navigation_notifications,2);
@@ -61,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                     //initializeCountDrawer();
                     //qbview.setBadgeNumber(4);
                     txtViewCounter.setVisibility(View.INVISIBLE);
-                    Intent i2 = new Intent(MainActivity.this, MainActivityTab.class);
+                    Intent i2 = new Intent(MainActivity.this, MyAccountActivity.class);
                     startActivity(i2);
 
                     return true;
@@ -132,5 +142,61 @@ public class MainActivity extends AppCompatActivity {
                 //txtViewCounter.setText("20");
             }
         }, 2000);
+    }
+
+    private void saveAndRetrieveMap(){
+        Map<String, String> aMap = new HashMap<>();
+        aMap.put("user_id", "1P_123");
+        aMap.put("close_clicked", "closed");
+
+        SharedPreferences keyValues = getSharedPreferences("Your_Shared_Prefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor keyValuesEditor = keyValues.edit();
+
+        for (String s : aMap.keySet()) {
+            keyValuesEditor.putString(s, aMap.get(s));
+        }
+
+        keyValuesEditor.apply();
+    }
+
+    private void writeToFile() {
+
+        Map<String, String> aMap = new HashMap<>();
+        aMap.put("user_id", "1P_123");
+        aMap.put("close_clicked", "closed");
+
+        File file = new File(getDir("data.txt", MODE_PRIVATE), "user_map");
+        ObjectOutputStream outputStream = null;
+        try {
+            outputStream = new ObjectOutputStream(new FileOutputStream(file));
+            outputStream.writeObject(aMap);
+            outputStream.flush();
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getMap(){
+        // create an ObjectInputStream for the file we created before
+        ObjectInputStream ois = null;
+        try {
+            ois = new ObjectInputStream(new FileInputStream("data.txt"));
+            // read and print an object and cast it as string
+            System.out.println("" +ois.readObject());
+
+            // read and print an object and cast it as string
+            byte[] read = (byte[]) ois.readObject();
+            String s2 = new String(read);
+            Map<String,String> aMapp  = new HashMap<>();
+
+            
+
+            System.out.println("" + s2);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

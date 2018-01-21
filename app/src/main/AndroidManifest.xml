@@ -21,7 +21,8 @@
         <activity
             android:name=".MainActivityTab"
             android:label="@string/title_activity_main_tab"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".MyAccountActivity"></activity>
     </application>
 
 </manifest>
