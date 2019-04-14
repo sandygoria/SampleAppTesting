@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import q.rorbin.badgeview.QBadgeView;
+//import q.rorbin.badgeview.QBadgeView;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mTextMessage;
     BottomNavigationView bottomNavigation;
     TextView slideshow;
-    QBadgeView qbview;
+    //QBadgeView qbview;
     TextView txtViewCounter;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener

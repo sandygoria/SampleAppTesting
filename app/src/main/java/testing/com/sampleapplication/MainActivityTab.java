@@ -1,8 +1,12 @@
 package testing.com.sampleapplication;
 
 import android.app.DatePickerDialog;
+import android.app.SearchManager;
+import android.app.VoiceInteractor;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -28,6 +32,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.actions.SearchIntents;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -46,10 +51,44 @@ public class MainActivityTab extends AppCompatActivity implements View.OnClickLi
     GoogleSignInClient mGoogleSignInClient;
     public int RC_SIGN_IN = 1001;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_tab);
+
+        Intent intent = getIntent();
+        if(intent != null && SearchIntents.ACTION_SEARCH.equals(intent.getAction())){
+            String query = (String) intent.getSerializableExtra(SearchManager.QUERY);
+            Toast.makeText(this, query, Toast.LENGTH_SHORT).show();
+        }
+
+
+
+//        VoiceInteractor.PickOptionRequest.Option option1 = new VoiceInteractor.PickOptionRequest.Option("Great Britain", 1);
+//        option.addSynonym("United Kingdom");
+//
+//
+//        VoiceInteractor.PickOptionRequest.Option option2 =
+//                new VoiceInteractor.PickOptionRequest.Option("USA", 1);
+//
+//        getVoiceInteractor()
+//                .submitRequest(new VoiceInteractor.PickOptionRequest("What is your favorite country?",
+//                        new VoiceInteractor.PickOptionRequest.Option[]{ option1, option2}, null) {
+//
+//        @Override
+//        public void onPickOptionResult(boolean finished, Option[] selections, Bundle result) {
+//            if (finished && selections.length == 1) {
+//                //Use the index of the options array to determine what was said
+//                selections[0].getIndex();
+//            }
+//        }
+//            @Override
+//            public void onCancel() {
+//               finish();
+//            }
+//        });
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
